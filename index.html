@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Flickr Photo API</title>
+    <script type="text/javascript">
+      (function() {
+        window.cb = function(data) {
+          // use returned data
+        }
+        
+        var tags = 'london';
+        var script = document.createElement('script');
+        script.src = 'http://api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=cb& tags=' +  tags;
+        document.head.appendChild(script);
+      })();
+    </script>
+  </head>
+  <body>
+  
+  </body>
+</html>

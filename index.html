@@ -17,7 +17,7 @@
           data.items.forEach(function(image) {
             var context = {url: image.media.m};
             var html = template(context);
-            document.body.insertAdjacentHTML('afterend', html);
+            document.body.insertAdjacentHTML('beforeend', html);
           });
         }
         

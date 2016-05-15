@@ -2,33 +2,19 @@
 <html>
   <head>
     <title>Flickr Photo API</title>
-    <script type="text/javascript" src="handlebars.js"></script>
+    
+    <link rel="stylesheet" href="main.css" />
+    
+    <script type="text/javascript" src="lib/handlebars/handlebars.js"></script>
+    <script type="text/javascript" src="src/initalise.js"></script>
+    <script type="text/javascript" src="src/flickr.js"></script>
+  </head>
+  <body>
+  
     <script id="image-template" type="text/x-handlebars-template">
       <div class="flickr">
         <img src="{{url}}" class="flickr__image" />
       </div>
     </script>
-    <script type="text/javascript">
-      (function() {
-        window.cb = function(data) {
-          var source = document.getElementById("image-template").innerHTML;
-          var template = Handlebars.compile(source);
-          
-          data.items.forEach(function(image) {
-            var context = {url: image.media.m};
-            var html = template(context);
-            document.body.insertAdjacentHTML('beforeend', html);
-          });
-        }
-        
-        var tags = 'london';
-        var script = document.createElement('script');
-        script.src = 'http://api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=cb& tags=' +  tags;
-        document.head.appendChild(script);
-      })();
-    </script>
-  </head>
-  <body>
-  
   </body>
 </html>

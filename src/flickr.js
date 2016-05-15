@@ -5,12 +5,20 @@ function Flickr() {
   }
 }
 
-Flickr.prototype.render = function(data) {
+Flickr.prototype.generateHTML = function(data) {
   var template = this.template();
+  var html = "";
 
   data.items.forEach(function(image) {
     var context = {url: image.media.m};
-    var html = template(context);
-    document.body.insertAdjacentHTML('beforeend', html);
+    console.log(context);
+    html += template(context);
   });
+  
+  return html;
+}
+
+Flickr.prototype.render = function(data) {
+  var html = this.generateHTML(data);
+  document.body.insertAdjacentHTML('beforeend', html);
 };

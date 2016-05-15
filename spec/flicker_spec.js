@@ -1,8 +1,5 @@
 describe("Flickr", function() {
-  var render;
-
-  beforeEach(function() {
-    flickr = new Flickr();
+  beforeAll(function() {
     data = {
                 "title": "Recent Uploads tagged london",
                 "link": "http://www.flickr.com/photos/tags/london/",
@@ -23,13 +20,33 @@ describe("Flickr", function() {
                  }
                 ]
               };
+  });
+
+  beforeEach(function() {
+    flickr = new Flickr();
+    flickr.data = data;
 
     flickr.template = jasmine.createSpy("template spy").and.callFake(function() {
       return Handlebars.compile("<div><img src='{{url}}' /></div>");
+    });
+    
+    flickr.render = jasmine.createSpy("render() spy").and.callFake(function() {
+      return "";
     });
   });
 
   it("should render an image when passed data", function() {
     expect(flickr.generateHTML(data)).toEqual("<div><img src='http://farm8.staticflickr.com/7770/26750179080_30b01582c8_m.jpg' /></div>");
   });
+  
+  describe("when a user interacts with the images on the page", function() {
+    
+    beforeEach(function() {
+      flickr.selectImage(data.items[0].media.m);
+    });
+    
+    it("should add the image to the list of selected images", function() {
+      expect(flickr.selectedImages).toEqual(["http://farm8.staticflickr.com/7770/26750179080_30b01582c8_m.jpg"]);
+    });
+  })
 });

@@ -3,22 +3,62 @@ function Flickr() {
     var source = document.getElementById("image-template").innerHTML;
     return Handlebars.compile(source);
   }
-}
+  
+  this.data = {};
+  
+  this.storage = new Storage;
+  this.storage.load();
+  
+  this.selectedImages = this.storage.selectedImages;
+};
 
-Flickr.prototype.generateHTML = function(data) {
+Flickr.prototype.bindEvents = function() {
+  var _self = this;
+  var images = document.querySelectorAll(".flickr__image");
+  
+  for (i = 0; i < images.length; i++) {
+    images[i].addEventListener("click", function(event) {
+      _self.selectImage(event.srcElement.src);
+    }, false);
+  };
+};
+
+Flickr.prototype.render = function() {
+  var html = this.generateHTML();
+  document.querySelectorAll(".flickr")[0].innerHTML = html;
+  
+  this.bindEvents();
+};
+
+Flickr.prototype.generateHTML = function() {
+  var _self = this;
   var template = this.template();
   var html = "";
 
-  data.items.forEach(function(image) {
-    var context = {url: image.media.m};
-    console.log(context);
+  this.data.items.forEach(function(image) {
+    var selected = false;
+    var imageSrc = image.media.m;
+      
+    if (_self.selectedImages.indexOf(imageSrc) > -1) {
+      selected = true;
+    }
+    
+    var context = {url: imageSrc, selected: selected};
     html += template(context);
   });
   
   return html;
-}
+};
 
-Flickr.prototype.render = function(data) {
-  var html = this.generateHTML(data);
-  document.body.insertAdjacentHTML('beforeend', html);
+Flickr.prototype.selectImage = function(image) {
+  var index = this.selectedImages.indexOf(image);
+  
+  if (index > -1) {
+    this.selectedImages.splice(index, 1);
+  } else {
+    this.selectedImages.push(image);
+  };
+  
+  this.render();
+  this.storage.save();
 };

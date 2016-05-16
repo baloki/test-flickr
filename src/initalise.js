@@ -1,7 +1,8 @@
 (function() {
   window.cb = function(data) {
-    var flickr = new Flickr()
-    flickr.render(data);
+    var flickr = new Flickr();
+    flickr.data = data;
+    flickr.render();
   }
 
   var tags = 'london';

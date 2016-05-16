@@ -1,3 +1,11 @@
 .flickr {
-  
+  &__image {
+    opacity: 0.9;
+    
+    &--selected {
+      border: 1px dashed red;
+      opacity: 1;
+      padding: 0.2em;
+    }
+  }
 }

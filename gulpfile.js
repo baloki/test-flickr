@@ -44,7 +44,7 @@ gulp.task('ci-tasks', ['sass-lint']);
 
 // Deploy Task
 gulp.task('deploy', ['sass', 'clean'], function() {
-  var remotePath = '/dragoncloud/dumpbox/webpages/flickr/';
+  var remotePath = '/flickr/';
 
   var globs = [
     './assets/**/*.css',
@@ -64,7 +64,7 @@ gulp.task('deploy', ['sass', 'clean'], function() {
     .pipe(conn.dest(remotePath));
 
   globs = [
-    './site/**/*.*'
+    './index.html'
   ]
 
   gulp.src( globs, { base: '.', buffer: false } )

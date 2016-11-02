@@ -9,6 +9,9 @@ var ftp = require('vinyl-ftp'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     sassLint = require('gulp-sass-lint');
+    concat = require('gulp-concat'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify');
 
 var conn = ftp.create({
   host: 'ftp.loki7.com',
@@ -34,30 +37,43 @@ gulp.task('sass-lint', function() {
         .pipe(sassLint.failOnError())
 });
 
+// Compile Our JavaScripts
+var jsSource = ['./assets/js/models/*.js', './assets/js/collections/*.js', './assets/js/views/*.js'],
+    jsLibSource = './lib/js/**/*.js',
+    jsDest = './assets/scripts';
+
+gulp.task('scripts', ['scripts-local']);
+
+// Compile Local scripts
+gulp.task('scripts-local', function() {
+    return gulp.src(jsSource)
+        .pipe(concat('main.js'))
+        .pipe(gulp.dest(jsDest))
+        .pipe(rename('main.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsDest));
+});
+
 // Watch Files For Changes
 gulp.task('watch', function() {
     gulp.watch('assets/scss/*.scss', ['sass-lint', 'sass']);
+    gulp.watch('assets/js/**/*.js', ['scripts']);
 });
 
 // Travis CI Tests
 gulp.task('ci-tasks', ['sass-lint']);
 
 // Deploy Task
-gulp.task('deploy', ['sass', 'clean'], function() {
+gulp.task('deploy', ['sass', 'scripts', 'clean'], function() {
   var remotePath = '/flickr/';
 
   var globs = [
     './assets/**/*.css',
     './assets/**/*.css.map',
-    './assets/**/*.jpg',
-    './assets/**/*.png',
-    './assets/**/*.svg',
-    './assets/**/*.eot',
-    './assets/**/*.ttf',
-    './assets/**/*.woff',
-    './assets/**/*.woff2',
-    './assets/**/*.ico',
-    './assets/**/*.js'
+    './assets/scripts/*.js',
+    './assets/scripts/*.min.js',
+    './lib/js/*.js',
+    './lib/js/*.map'
   ]
 
   gulp.src( globs, { base: '.', buffer: false } )
@@ -79,4 +95,4 @@ gulp.task('clean-assets', function(cb) {
 });
 
 // Default Task
-gulp.task('default', ['sass-lint', 'sass', 'watch']);
+gulp.task('default', ['sass-lint', 'sass', 'scripts', 'watch']);

@@ -11,7 +11,9 @@ var ftp = require('vinyl-ftp'),
     sassLint = require('gulp-sass-lint');
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify'),
+    jshint = require('gulp-jshint'),
+    stylish = require('jshint-stylish');
 
 var conn = ftp.create({
   host: 'ftp.loki7.com',
@@ -37,6 +39,13 @@ gulp.task('sass-lint', function() {
         .pipe(sassLint.failOnError())
 });
 
+// Lint Our JavaScripts
+gulp.task('jshint-lint', function() {
+  return gulp.src('./assets/js/**/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'));
+});
+
 // Compile Our JavaScripts
 var jsSource = ['./assets/js/models/*.js', './assets/js/collections/*.js', './assets/js/views/*.js'],
     jsLibSource = './lib/js/**/*.js',
@@ -57,11 +66,11 @@ gulp.task('scripts-local', function() {
 // Watch Files For Changes
 gulp.task('watch', function() {
     gulp.watch('assets/scss/*.scss', ['sass-lint', 'sass']);
-    gulp.watch('assets/js/**/*.js', ['scripts']);
+    gulp.watch('assets/js/**/*.js', ['jshint-lint', 'scripts']);
 });
 
 // Travis CI Tests
-gulp.task('ci-tasks', ['sass-lint']);
+gulp.task('ci-tasks', ['sass-lint', 'jshint-lint']);
 
 // Deploy Task
 gulp.task('deploy', ['sass', 'scripts', 'clean'], function() {
@@ -95,4 +104,4 @@ gulp.task('clean-assets', function(cb) {
 });
 
 // Default Task
-gulp.task('default', ['sass-lint', 'sass', 'scripts', 'watch']);
+gulp.task('default', ['sass-lint', 'sass', 'jshint-lint', 'scripts', 'watch']);

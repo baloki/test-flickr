@@ -18,6 +18,7 @@ var FlickrView = Backbone.View.extend({
       image.src = model.get("media").m;
       image.className = "flickr__image";
       image.alt = model.get("title");
+      image.id = model.id;
       html.appendChild(image);
     });
 
@@ -25,7 +26,7 @@ var FlickrView = Backbone.View.extend({
   },
 
   toggleImage: function() {
-    alert("Test");
+    console.log("test");
   },
 
   error: function() {

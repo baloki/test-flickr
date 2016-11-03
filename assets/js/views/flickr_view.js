@@ -14,7 +14,11 @@ var FlickrView = Backbone.View.extend({
     var html = document.createDocumentFragment();
 
     this.collection.each(function(model) {
-      html.appendChild(model.render());
+      var image = document.createElement("img");
+      image.src = model.get("media").m;
+      image.className = "flickr__image";
+      image.alt = model.get("title");
+      html.appendChild(image);
     });
 
     this.el.appendChild(html);

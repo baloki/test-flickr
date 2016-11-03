@@ -6,18 +6,22 @@ var FlickrView = Backbone.View.extend({
     this.collection.fetch();
   },
 
+  events: {
+    "click .flickr__image": "toggleImage"
+  },
+
   render: function() {
     var html = document.createDocumentFragment();
 
     this.collection.each(function(model) {
-      var image = document.createElement("img");
-      image.src = model.get("media").m;
-      image.className = "flickr__image";
-      image.alt = model.get("title");
-      html.appendChild(image);
+      html.appendChild(model.render());
     });
 
     this.el.appendChild(html);
+  },
+
+  toggleImage: function() {
+    alert("Test");
   },
 
   error: function() {

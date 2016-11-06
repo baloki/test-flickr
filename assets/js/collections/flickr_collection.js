@@ -8,6 +8,13 @@ var FlickrCollection = Backbone.Collection.extend({
     return Backbone.sync(method, collection, options);
   },
 
+  initialize: function() {
+    this.localStorage = new Storage();
+    this.localStorage.load();
+
+    this.listenTo(this, "change", this.localStorage.save.bind(this.localStorage));
+  },
+
   parse: function(response) {
     return response.items;
   }

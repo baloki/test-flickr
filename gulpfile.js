@@ -47,7 +47,7 @@ gulp.task('jshint-lint', function() {
 });
 
 // Compile Our JavaScripts
-var jsSource = ['./assets/js/models/*.js', './assets/js/collections/*.js', './assets/js/views/*.js'],
+var jsSource = ['./assets/js/models/*.js', './assets/js/collections/*.js', './assets/js/views/*.js', './assets/js/helpers/*.js'],
     jsLibSource = './lib/js/**/*.js',
     jsDest = './assets/scripts';
 

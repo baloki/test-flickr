@@ -29,17 +29,12 @@ var FlickrView = Backbone.View.extend({
   toggleImage: function(event) {
     var elementId = event.target.id;
 
-    _.each(this.collection.where({ selected: true }), function(model) {
-      model.set({ selected: false });
-    });
-
-    _.each(document.querySelectorAll(".flickr__image"), function(element) {
-      element.setAttribute("data-selected", "false");
-    });
-
     if (event.target.dataset.selected === "false") {
       this.collection.get(elementId).set({ selected: true });
       event.target.setAttribute("data-selected", "true");
+    } else {
+      this.collection.get(elementId).set({ selected: false });
+      event.target.setAttribute("data-selected", "false");
     }
   },
 

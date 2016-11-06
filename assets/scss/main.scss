@@ -1,3 +1,5 @@
-body {
-  background-color: red;
+.flickr {
+  &__image[data-selected="true"] {
+    border: 1px dashed #ff0000;
+  }
 }

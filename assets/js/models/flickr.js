@@ -1,7 +1,9 @@
 var Flickr = Backbone.Model.extend({
   initialize: function() {
-    this.id = this.generateID();
+    this.set("uniqueId", this.generateID());
   },
+
+  idAttribute: 'uniqueId',
 
   generateID: function() {
     return _.chain(this.get("media").m.split(/\.|\//g))

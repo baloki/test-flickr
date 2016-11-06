@@ -19,14 +19,28 @@ var FlickrView = Backbone.View.extend({
       image.className = "flickr__image";
       image.alt = model.get("title");
       image.id = model.id;
+      image.setAttribute("data-selected", model.get("selected") || "false");
       html.appendChild(image);
     });
 
     this.el.appendChild(html);
   },
 
-  toggleImage: function() {
-    console.log("test");
+  toggleImage: function(event) {
+    var elementId = event.target.id;
+
+    _.each(this.collection.where({ selected: true }), function(model) {
+      model.set({ selected: false });
+    });
+
+    _.each(document.querySelectorAll(".flickr__image"), function(element) {
+      element.setAttribute("data-selected", "false");
+    });
+
+    if (event.target.dataset.selected === "false") {
+      this.collection.get(elementId).set({ selected: true });
+      event.target.setAttribute("data-selected", "true");
+    }
   },
 
   error: function() {

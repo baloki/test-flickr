@@ -34,7 +34,34 @@ gulp.task('sass', function() {
 // Lint Our Sass
 gulp.task('sass-lint', function() {
   return gulp.src('assets/scss/*.scss')
-        .pipe(sassLint())
+        .pipe(sassLint({
+          files: {
+            ignore: 'assets/scss/_reset.scss'
+          },
+          rules: {
+            'class-name-format': [
+              1,
+              {
+                'convention': 'hyphenatedbem'
+              }
+            ],
+            'hex-length': [
+              1,
+              {
+              'style': 'long'
+              }
+            ],
+            'leading-zero': [
+              1,
+              {
+                'include': true
+              }
+            ],
+            'no-ids': 0,
+            'force-pseudo-nesting': 0,
+            'force-attribute-nesting': 0
+          }
+        }))
         .pipe(sassLint.format())
         .pipe(sassLint.failOnError())
 });

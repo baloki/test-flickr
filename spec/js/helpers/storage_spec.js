@@ -3,15 +3,10 @@ describe("Storage", function() {
 
   beforeEach(function() {
     storage = new Storage();
-    storage.selectedImages = ["test"];
-    localStorage.removeItem('selectedImages');
   });
 
-  afterAll(function() {
-    localStorage.removeItem('selectedImages');
-  })
-
   it("lets you save an array to localstorage", function() {
+    storage.selectedImages = ["test"];
     spyOn(localStorage, 'setItem');
     storage.save();
 
@@ -25,7 +20,9 @@ describe("Storage", function() {
   });
 
   it("lets you load a previously saved array from localstorage", function() {
+    storage.selectedImages = ["test"];
     storage.save();
+    storage.selectedImages = [];
     storage.load();
 
     expect(storage.selectedImages).toEqual(["test"]);
